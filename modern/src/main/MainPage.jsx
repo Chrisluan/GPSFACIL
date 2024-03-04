@@ -15,6 +15,7 @@ import EventsDrawer from './EventsDrawer';
 import useFilter from './useFilter';
 import MainToolbar from './MainToolbar';
 import MainMap from './MainMap';
+import MenuPaths from './MenuPaths';
 import { useAttributePreference } from '../common/util/preferences';
 
 const useStyles = makeStyles((theme) => ({
@@ -102,30 +103,21 @@ const MainPage = () => {
   return (
     <div className={classes.root}>
       {desktop && (
-        <MainMap
-          filteredPositions={filteredPositions}
-          selectedPosition={selectedPosition}
-          onEventsClick={onEventsClick}
-        />
+        <>
+          <MenuPaths>
+            </MenuPaths>
+          <MainMap
+            filteredPositions={filteredPositions}
+            selectedPosition={selectedPosition}
+            onEventsClick={onEventsClick}
+          />
+        </>
+        
       )}
       <div className={classes.sidebar}>
-        <Paper square elevation={3} className={classes.header}>
-          <MainToolbar
-            filteredDevices={filteredDevices}
-            devicesOpen={devicesOpen}
-            setDevicesOpen={setDevicesOpen}
-            keyword={keyword}
-            setKeyword={setKeyword}
-            filter={filter}
-            setFilter={setFilter}
-            filterSort={filterSort}
-            setFilterSort={setFilterSort}
-            filterMap={filterMap}
-            setFilterMap={setFilterMap}
-          />
-        </Paper>
         <div className={classes.middle}>
           {!desktop && (
+            
             <div className={classes.contentMap}>
               <MainMap
                 filteredPositions={filteredPositions}
@@ -134,25 +126,8 @@ const MainPage = () => {
               />
             </div>
           )}
-          <Paper square className={classes.contentList} style={devicesOpen ? {} : { visibility: 'hidden' }}>
-            <DeviceList devices={filteredDevices} />
-          </Paper>
         </div>
-        {desktop && (
-          <div className={classes.footer}>
-            <BottomMenu />
-          </div>
-        )}
       </div>
-      <EventsDrawer open={eventsOpen} onClose={() => setEventsOpen(false)} />
-      {selectedDeviceId && (
-        <StatusCard
-          deviceId={selectedDeviceId}
-          position={selectedPosition}
-          onClose={() => dispatch(devicesActions.selectId(null))}
-          desktopPadding={theme.dimensions.drawerWidthDesktop}
-        />
-      )}
     </div>
   );
 };

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import dayjs from 'dayjs';
 import {
-  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Link, Snackbar, IconButton, Tooltip, LinearProgress, Box,
+  useMediaQuery, InputLabel, Select, MenuItem, FormControl, Button, TextField, Snackbar, IconButton, Tooltip, LinearProgress, Box,
 } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
 import makeStyles from '@mui/styles/makeStyles';
@@ -33,14 +34,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     gap: theme.spacing(2),
   },
-  registerButton: {
-    minWidth: 'unset',
-  },
-  resetPassword: {
-    cursor: 'pointer',
-    textAlign: 'center',
-    marginTop: theme.spacing(2),
-  },
 }));
 
 const LoginPage = () => {
@@ -59,8 +52,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
 
-  const registrationEnabled = useSelector((state) => state.session.server.registration);
-  const languageEnabled = useSelector((state) => !state.session.server.attributes['ui.disableLoginLanguage']);
   const changeEnabled = useSelector((state) => !state.session.server.attributes.disableChange);
   const emailEnabled = useSelector((state) => state.session.server.emailEnabled);
   const openIdEnabled = useSelector((state) => state.session.server.openIdEnabled);
@@ -150,17 +141,7 @@ const LoginPage = () => {
 
   return (
     <LoginLayout>
-      <div className={classes.options}>
-        {nativeEnvironment && changeEnabled && (
-          <Tooltip title={t('settingsServer')}>
-            <IconButton onClick={() => navigate('/change-server')}>
-              <LockOpenIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </div>
       <div className={classes.container}>
-        {useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.primary.main} />}
         <TextField
           required
           error={failed}
@@ -214,41 +195,6 @@ const LoginPage = () => {
           >
             {t('loginOpenId')}
           </Button>
-        )}
-        <div className={classes.extraContainer}>
-          <Button
-            className={classes.registerButton}
-            onClick={() => navigate('/register')}
-            disabled={!registrationEnabled}
-            color="secondary"
-          >
-            {t('loginRegister')}
-          </Button>
-          {languageEnabled && (
-            <FormControl fullWidth>
-              <InputLabel>{t('loginLanguage')}</InputLabel>
-              <Select label={t('loginLanguage')} value={language} onChange={(e) => setLanguage(e.target.value)}>
-                {languageList.map((it) => (
-                  <MenuItem key={it.code} value={it.code}>
-                    <Box component="span" sx={{ mr: 1 }}>
-                      <ReactCountryFlag countryCode={it.country} svg />
-                    </Box>
-                    {it.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        </div>
-        {emailEnabled && (
-          <Link
-            onClick={() => navigate('/reset-password')}
-            className={classes.resetPassword}
-            underline="none"
-            variant="caption"
-          >
-            {t('loginReset')}
-          </Link>
         )}
       </div>
       <Snackbar

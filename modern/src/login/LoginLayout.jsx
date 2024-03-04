@@ -1,27 +1,18 @@
 import React from 'react';
-import { useMediaQuery, Paper } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
+import { Box, Image } from '@chakra-ui/react';
+import LoginImage from './../resources/images/data/gpsfacil.svg';
+import logo from './../resources/images/icon/logotraccar.svg';
 import { useTheme } from '@mui/material/styles';
+import { grey, green, indigo } from '@mui/material/colors';
 import LogoImage from './LogoImage';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     height: '100%',
-  },
-  sidebar: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    background: theme.palette.primary.main,
-    paddingBottom: theme.spacing(5),
-    width: theme.dimensions.sidebarWidth,
-    [theme.breakpoints.down('lg')]: {
-      width: theme.dimensions.sidebarWidthTablet,
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: '0px',
-    },
   },
   paper: {
     display: 'flex',
@@ -43,18 +34,32 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginLayout = ({ children }) => {
   const classes = useStyles();
-  const theme = useTheme();
+  const isDesktop = useMediaQuery('(min-width: 800px)')
 
   return (
     <main className={classes.root}>
-      <div className={classes.sidebar}>
-        {!useMediaQuery(theme.breakpoints.down('lg')) && <LogoImage color={theme.palette.secondary.contrastText} />}
-      </div>
-      <Paper className={classes.paper}>
+      <Box
+        width={isDesktop ? '30rem' : '100%'}
+        minWidth={'fit-content'}
+        maxW={'30rem'}
+        display={'flex'}
+        justifyContent={'center'}
+        flexDirection={'column'}
+        alignItems={'center'}
+        backgroundColor={green[900]}
+      >
+        <LogoImage/>
         <form className={classes.form}>
           {children}
         </form>
-      </Paper>
+      </Box>
+      {
+        isDesktop && (
+          <Box width={'80%'} display={'flex'} justifyContent={'center'} alignItems={'center'} padding={'2rem'}>
+              <Image objectFit={'cover'} maxHeight={'80%'} src={LoginImage}/>
+          </Box>
+        )
+      }
     </main>
   );
 };

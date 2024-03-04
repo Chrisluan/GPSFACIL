@@ -9,7 +9,7 @@ import CachingController from './CachingController';
 import { useEffectAsync } from './reactHelper';
 import { sessionActions } from './store';
 import UpdateController from './UpdateController';
-
+import {ChakraProvider} from '@chakra-ui/react'
 const useStyles = makeStyles(() => ({
   page: {
     flexGrow: 1,
@@ -47,6 +47,7 @@ const App = () => {
 
   return !initialized ? (<LinearProgress />) : (
     <>
+    <ChakraProvider>
       <SocketController />
       <CachingController />
       <UpdateController />
@@ -58,6 +59,7 @@ const App = () => {
           <BottomMenu />
         </div>
       )}
+    </ChakraProvider>
     </>
   );
 };

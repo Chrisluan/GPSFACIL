@@ -2,11 +2,12 @@ import React from 'react';
 import { useTheme, useMediaQuery } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import Logo from '../resources/images/logo.svg?react';
+import {Image} from '@chakra-ui/react';
+import Logo from '../resources/images/icon/logotraccar.svg';
 
 const useStyles = makeStyles(() => ({
   image: {
-    alignSelf: 'center',
+    position:'relative',
     maxWidth: '240px',
     maxHeight: '120px',
     width: 'auto',
@@ -14,22 +15,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const LogoImage = ({ color }) => {
+const LogoImage = () => {
   const theme = useTheme();
   const classes = useStyles();
-
-  const expanded = !useMediaQuery(theme.breakpoints.down('lg'));
-
-  const logo = useSelector((state) => state.session.server.attributes?.logo);
-  const logoInverted = useSelector((state) => state.session.server.attributes?.logoInverted);
-
-  if (logo) {
-    if (expanded && logoInverted) {
-      return <img className={classes.image} src={logoInverted} alt="" />;
-    }
-    return <img className={classes.image} src={logo} alt="" />;
-  }
-  return <Logo className={classes.image} style={{ color }} />;
+  return <Image className={classes.image} src={Logo}/>;
 };
 
 export default LogoImage;
